@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoWave Academy - Episodio 3: Il Linguaggio delle Funzioni</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(45deg, #e94560, #533483);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(45deg, #e94560, #533483);
+            border-color: #fff;
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            color: #e94560;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h3 {
+            color: #f39c12;
+            margin: 20px 0 10px 0;
+            font-size: 1.4rem;
+        }
+        
+        .toggle-theory-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .toggle-theory-btn:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .theory-content {
+            display: none;
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .theory-content.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                padding: 0 20px;
+            }
+            to {
+                opacity: 1;
+                max-height: 2000px;
+                padding: 20px;
+            }
+        }
+        
+        .theory-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .example-box {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .exercise {
+            background: rgba(230, 126, 34, 0.1);
+            border: 2px solid #e67e22;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .exercise-number {
+            display: inline-block;
+            background: #e67e22;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .solution-space {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 100px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(45deg, #e94560, #533483);
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .highlight {
+            color: #e94560;
+            font-weight: bold;
+        }
+        
+        .note {
+            background: rgba(241, 196, 15, 0.1);
+            border-left: 4px solid #f1c40f;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .print-button {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+        }
+        
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .tabs, .print-button, .toggle-theory-btn {
+                display: none;
+            }
+            .theory-content {
+                display: block !important;
+            }
+            .card {
+                border: 2px solid #000;
+                page-break-inside: avoid;
+            }
+        }
+        
+        .icon {
+            font-size: 1.5rem;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .formula-highlight {
+            background: rgba(52, 152, 219, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 TECHNOWAVE ACADEMY - EPISODIO 3</h1>
+            <p>Il Linguaggio Universale delle Funzioni</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">⏱️ Tempo disponibile: 2 ore in classe + lavoro a casa</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab(0)">🔴 SQUADRA ROSSA</button>
+            <button class="tab-button" onclick="showTab(1)">🔵 SQUADRA BLU</button>
+            <button class="tab-button" onclick="showTab(2)">🟢 SQUADRA VERDE</button>
+        </div>
+        
+        <!-- SQUADRA ROSSA -->
+        <div class="tab-content active" id="tab0">
+            <div class="card">
+                <h2><span class="icon">🔴</span> SQUADRA ROSSA: Sound Wave Analyzer</h2>
+                <p><strong>Missione:</strong> Classificare e analizzare funzioni razionali e le loro trasformazioni</p>
+                <p><strong>Focus:</strong> Funzioni razionali intere e fratte, zeri, segno, trasformazioni geometriche</p>
+            </div>
+            
+            <div class="card">
+                <h2>📚 Parte 1: Classificazione e Proprietà delle Funzioni</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory1-red')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory1-red">
+                    <h3>🎯 Classificazione delle Funzioni</h3>
+                    
+                    <div class="theory-box">
+                        <h4>1. Funzioni Razionali Intere (Polinomi)</h4>
+                        <p>Forma generale: \(f(x) = a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0\)</p>
+                        <ul>
+                            <li><strong>Dominio:</strong> \(D = \mathbb{R}\) (tutti i numeri reali)</li>
+                            <li><strong>Esempi:</strong> \(f(x) = 2x + 3\), \(g(x) = x^2 - 4\), \(h(x) = x^3 - 2x\)</li>
+                            <li><strong>Analogia audio:</strong> Segnali continui senza interruzioni</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>2. Funzioni Razionali Fratte</h4>
+                        <p>Forma generale: \(f(x) = \frac{P(x)}{Q(x)}\) dove \(P(x)\) e \(Q(x)\) sono polinomi</p>
+                        <ul>
+                            <li><strong>Dominio:</strong> \(D = \mathbb{R} \setminus \{x : Q(x) = 0\}\)</li>
+                            <li><strong>Condizioni di esistenza:</strong> Il denominatore deve essere diverso da zero!</li>
+                            <li><strong>Esempi:</strong> \(f(x) = \frac{1}{x}\), \(g(x) = \frac{2x+1}{x-3}\)</li>
+                            <li><strong>Analogia audio:</strong> Segnali con "buchi" o discontinuità (asintoti)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>3. Zeri di una Funzione</h4>
+                        <p>Gli <strong>zeri</strong> sono i valori di \(x\) per cui \(f(x) = 0\)</p>
+                        <div class="formula-highlight">
+                            \(f(x) = 0 \Rightarrow \text{risolvere l'equazione}\)
+                        </div>
+                        <p><strong>Graficamente:</strong> Sono i punti dove il grafico interseca l'asse \(x\)</p>
+                        <p><strong>Analogia audio:</strong> Momenti di silenzio nel segnale</p>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>4. Studio del Segno</h4>
+                        <p>Determinare gli intervalli dove:</p>
+                        <ul>
+                            <li>\(f(x) > 0\) (funzione positiva - grafico sopra l'asse \(x\))</li>
+                            <li>\(f(x) < 0\) (funzione negativa - grafico sotto l'asse \(x\))</li>
+                        </ul>
+                        <p><strong>Procedura:</strong></p>
+                        <ol>
+                            <li>Trovare gli zeri della funzione</li>
+                            <li>Studiare il segno negli intervalli delimitati dagli zeri</li>
+                            <li>Creare una tabella dei segni</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempio Completo</h4>
+                        <p>Studiamo \(f(x) = x^2 - 4\)</p>
+                        <p><strong>1. Classificazione:</strong> Funzione razionale intera (polinomio di 2° grado)</p>
+                        <p><strong>2. Dominio:</strong> \(D = \mathbb{R}\)</p>
+                        <p><strong>3. Zeri:</strong> \(x^2 - 4 = 0 \Rightarrow x^2 = 4 \Rightarrow x = \pm 2\)</p>
+                        <p><strong>4. Studio del segno:</strong></p>
+                        <table>
+                            <tr>
+                                <th>\(x\)</th>
+                                <th>\((-\infty, -2)\)</th>
+                                <th>\(-2\)</th>
+                                <th>\((-2, 2)\)</th>
+                                <th>\(2\)</th>
+                                <th>\((2, +\infty)\)</th>
+                            </tr>
+                            <tr>
+                                <td>\(f(x)\)</td>
+                                <td>\(+\)</td>
+                                <td>\(0\)</td>
+                                <td>\(-\)</td>
+                                <td>\(0\)</td>
+                                <td>\(+\)</td>
+                            </tr>
+                        </table>
+                        <p>\(f(x) > 0\) per \(x < -2\) o \(x > 2\)</p>
+                        <p>\(f(x) < 0\) per \(-2 < x < 2\)</p>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 1</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 1</span>
+                    <p>Per ciascuna delle seguenti funzioni:</p>
+                    <p>a) \(f(x) = 3x - 6\)</p>
+                    <p>b) \(g(x) = x^2 - 9\)</p>
+                    <p>c) \(h(x) = \frac{x+2}{x-1}\)</p>
+                    
+                    <p><strong>Determina:</strong></p>
+                    <ol>
+                        <li>Classificazione (razionale intera o fratta)</li>
+                        <li>Dominio</li>
+                        <li>Zeri della funzione</li>
+                        <li>Studio del segno (intervalli dove la funzione è positiva/negativa)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>SOLUZIONI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 2</span>
+                    <p>Considera la funzione \(f(x) = \frac{2x-4}{x+3}\)</p>
+                    <ol>
+                        <li>Determina le condizioni di esistenza (C.E.)</li>
+                        <li>Trova gli zeri della funzione</li>
+                        <li>Costruisci la tabella dei segni</li>
+                        <li>Determina per quali valori di \(x\) la funzione è positiva</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>SVOLGIMENTO:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🎨 Parte 2: Trasformazioni Geometriche</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory2-red')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory2-red">
+                    <h3>🎯 Trasformazioni Geometriche delle Funzioni</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Data una funzione \(y = f(x)\), possiamo trasformarla:</h4>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Trasformazione</th>
+                                    <th>Formula</th>
+                                    <th>Effetto</th>
+                                    <th>Analogia Audio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Traslazione verticale</strong></td>
+                                    <td>\(y = f(x) + k\)</td>
+                                    <td>Sposta il grafico di \(k\) unità verso l'alto (\(k > 0\)) o verso il basso (\(k < 0\))</td>
+                                    <td>Pitch shift</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Traslazione orizzontale</strong></td>
+                                    <td>\(y = f(x - h)\)</td>
+                                    <td>Sposta il grafico di \(h\) unità a destra (\(h > 0\)) o a sinistra (\(h < 0\))</td>
+                                    <td>Time delay</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dilatazione/Contrazione verticale</strong></td>
+                                    <td>\(y = a \cdot f(x)\)</td>
+                                    <td>Se \(a > 1\): dilatazione; Se \(0 < a < 1\): contrazione</td>
+                                    <td>Volume boost/cut</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dilatazione/Contrazione orizzontale</strong></td>
+                                    <td>\(y = f(ax)\)</td>
+                                    <td>Se \(a > 1\): contrazione; Se \(0 < a < 1\): dilatazione</td>
+                                    <td>Time stretch/compression</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Simmetria rispetto asse x</strong></td>
+                                    <td>\(y = -f(x)\)</td>
+                                    <td>Ribalta il grafico rispetto all'asse \(x\)</td>
+                                    <td>Phase inversion</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Simmetria rispetto asse y</strong></td>
+                                    <td>\(y = f(-x)\)</td>
+                                    <td>Ribalta il grafico rispetto all'asse \(y\)</td>
+                                    <td>Reverse audio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>⚠️ ATTENZIONE:</strong> Nelle trasformazioni orizzontali, il segno è OPPOSTO a quello che sembra!
+                        <ul>
+                            <li>\(f(x - 3)\) sposta a DESTRA di 3</li>
+                            <li>\(f(x + 3)\) sposta a SINISTRA di 3</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempio: Trasformazioni multiple</h4>
+                        <p>Data \(f(x) = x^2\), otteniamo \(g(x) = 2(x-1)^2 + 3\)</p>
+                        <p><strong>Sequenza di trasformazioni:</strong></p>
+                        <ol>
+                            <li>\(f(x) = x^2\) (funzione base - parabola con vertice in origine)</li>
+                            <li>\(f(x-1) = (x-1)^2\) (traslazione a DESTRA di 1)</li>
+                            <li>\(2f(x-1) = 2(x-1)^2\) (dilatazione verticale di fattore 2)</li>
+                            <li>\(2f(x-1) + 3 = 2(x-1)^2 + 3\) (traslazione verso l'ALTO di 3)</li>
+                        </ol>
+                        <p><strong>Risultato:</strong> Parabola con vertice in \((1, 3)\)</p>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 2</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 3</span>
+                    <p>Data la funzione \(f(x) = |x|\), descrivi come si ottiene il grafico delle seguenti funzioni e indica le coordinate del vertice:</p>
+                    <ol>
+                        <li>\(g(x) = |x| + 2\)</li>
+                        <li>\(h(x) = |x - 3|\)</li>
+                        <li>\(k(x) = 2|x|\)</li>
+                        <li>\(m(x) = -|x + 1| + 4\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>DESCRIZIONE TRASFORMAZIONI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 4</span>
+                    <p>Partendo dal grafico di \(f(x) = x^2\), applica IN SEQUENZA le seguenti trasformazioni:</p>
+                    <ol>
+                        <li>Traslazione a destra di 2 unità</li>
+                        <li>Simmetria rispetto all'asse \(x\)</li>
+                        <li>Traslazione verso l'alto di 5 unità</li>
+                    </ol>
+                    <p><strong>Scrivi la funzione finale ottenuta e indica il vertice della parabola.</strong></p>
+                    
+                    <div class="solution-space">
+                        <strong>FUNZIONE FINALE:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 5 - SFIDA</span>
+                    <p>Reverse Engineering: Ti viene dato il grafico finale di una funzione che è stata ottenuta trasformando \(f(x) = \frac{1}{x}\).</p>
+                    <p>La funzione finale ha:</p>
+                    <ul>
+                        <li>Asintoto verticale in \(x = -2\)</li>
+                        <li>Asintoto orizzontale in \(y = 3\)</li>
+                    </ul>
+                    <p><strong>Determina la sequenza di trasformazioni applicate e scrivi la funzione finale.</strong></p>
+                    
+                    <div class="solution-space">
+                        <strong>ANALISI:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🏠 LAVORO A CASA - Squadra Rossa</h2>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 1</span>
+                    <p>Studia completamente la funzione \(f(x) = \frac{x^2 - 1}{x + 2}\):</p>
+                    <ol>
+                        <li>Dominio</li>
+                        <li>Intersezioni con gli assi (zeri e punto y)</li>
+                        <li>Studio del segno</li>
+                        <li>Comportamento agli estremi del dominio (cosa succede per \(x \to \pm\infty\) e vicino a \(x = -2\))</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 2</span>
+                    <p>Data \(f(x) = \sqrt{x}\), scrivi l'espressione analitica delle seguenti trasformazioni:</p>
+                    <ol>
+                        <li>Il grafico traslato di 3 unità a sinistra e 2 unità verso il basso</li>
+                        <li>Il grafico simmetrico rispetto all'asse \(x\) e poi traslato verso l'alto di 5 unità</li>
+                        <li>Il grafico con dilatazione orizzontale di fattore 2 (più "largo")</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SQUADRA BLU -->
+        <div class="tab-content" id="tab1">
+            <div class="card">
+                <h2><span class="icon">🔵</span> SQUADRA BLU: Pattern Detector</h2>
+                <p><strong>Missione:</strong> Riconoscere proprietà delle funzioni: crescenza, simmetrie, periodicità</p>
+                <p><strong>Focus:</strong> Funzioni crescenti/decrescenti, pari/dispari, periodiche, monotone</p>
+            </div>
+            
+            <div class="card">
+                <h2>📚 Parte 1: Crescenza e Decrescenza</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory1-blue')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory1-blue">
+                    <h3>🎯 Funzioni Crescenti e Decrescenti</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Definizioni</h4>
+                        <p>Una funzione \(f(x)\) è:</p>
+                        
+                        <p><strong>CRESCENTE</strong> in un intervallo \(I\) se:</p>
+                        <div class="formula-highlight">
+                            \(\forall x_1, x_2 \in I, \quad x_1 < x_2 \Rightarrow f(x_1) < f(x_2)\)
+                        </div>
+                        <p><em>In parole:</em> Quando \(x\) aumenta, anche \(f(x)\) aumenta</p>
+                        <p><em>Graficamente:</em> Il grafico "sale" andando da sinistra a destra</p>
+                        
+                        <p><strong>DECRESCENTE</strong> in un intervallo \(I\) se:</p>
+                        <div class="formula-highlight">
+                            \(\forall x_1, x_2 \in I, \quad x_1 < x_2 \Rightarrow f(x_1) > f(x_2)\)
+                        </div>
+                        <p><em>In parole:</em> Quando \(x\) aumenta, \(f(x)\) diminuisce</p>
+                        <p><em>Graficamente:</em> Il grafico "scende" andando da sinistra a destra</p>
+                        
+                        <p><strong>MONOTONA</strong>: Una funzione è monotona se è sempre crescente O sempre decrescente in tutto il suo dominio</p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempi</h4>
+                        <ul>
+                            <li>\(f(x) = 2x + 1\) è CRESCENTE in tutto \(\mathbb{R}\) (funzione monotona crescente)</li>
+                            <li>\(g(x) = -3x + 5\) è DECRESCENTE in tutto \(\mathbb{R}\) (funzione monotona decrescente)</li>
+                            <li>\(h(x) = x^2\) è DECRESCENTE in \((-\infty, 0)\) e CRESCENTE in \((0, +\infty)\) (NON monotona)</li>
+                            <li>\(k(x) = \frac{1}{x}\) è DECRESCENTE in \((-\infty, 0)\) e DECRESCENTE in \((0, +\infty)\) ma NON è monotona in tutto il dominio</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>💡 Come riconoscere graficamente:</strong>
+                        <ul>
+                            <li>Crescente: seguendo il grafico da sinistra a destra, "sali sempre"</li>
+                            <li>Decrescente: seguendo il grafico da sinistra a destra, "scendi sempre"</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 1</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 1</span>
+                    <p>Per ciascuna funzione, determina gli intervalli di crescenza e decrescenza:</p>
+                    <ol>
+                        <li>\(f(x) = -x + 4\)</li>
+                        <li>\(g(x) = x^2 - 6x\)</li>
+                        <li>\(h(x) = -x^2 + 2x + 3\)</li>
+                    </ol>
+                    <p><strong>Suggerimento:</strong> Per le parabole, trova il vertice!</p>
+                    
+                    <div class="solution-space">
+                        <strong>INTERVALLI DI CRESCENZA/DECRESCENZA:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 2</span>
+                    <p>Quali delle seguenti funzioni sono MONOTONE? Giustifica la risposta.</p>
+                    <ol>
+                        <li>\(f(x) = 5x - 2\)</li>
+                        <li>\(g(x) = |x|\)</li>
+                        <li>\(h(x) = \frac{1}{x}\) nel suo dominio</li>
+                        <li>\(k(x) = x^3\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>ANALISI MONOTONIA:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🔄 Parte 2: Simmetrie - Funzioni Pari e Dispari</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory2-blue')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory2-blue">
+                    <h3>🎯 Funzioni Pari e Dispari</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Funzione PARI</h4>
+                        <p>Una funzione è PARI se:</p>
+                        <div class="formula-highlight">
+                            \(f(-x) = f(x) \quad \forall x \in D\)
+                        </div>
+                        <p><strong>Simmetria:</strong> Rispetto all'asse \(y\) (simmetria assiale)</p>
+                        <p><strong>Test pratico:</strong> Se "pieghi" il grafico sull'asse \(y\), le due metà coincidono</p>
+                        <p><strong>Esempi:</strong></p>
+                        <ul>
+                            <li>\(f(x) = x^2\) → \(f(-x) = (-x)^2 = x^2 = f(x)\) ✓ PARI</li>
+                            <li>\(g(x) = |x|\) → \(g(-x) = |-x| = |x| = g(x)\) ✓ PARI</li>
+                            <li>\(h(x) = \cos(x)\) → \(h(-x) = \cos(-x) = \cos(x)\) ✓ PARI</li>
+                            <li>\(k(x) = x^4 + 2x^2 - 5\) → ✓ PARI (solo potenze pari)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>Funzione DISPARI</h4>
+                        <p>Una funzione è DISPARI se:</p>
+                        <div class="formula-highlight">
+                            \(f(-x) = -f(x) \quad \forall x \in D\)
+                        </div>
+                        <p><strong>Simmetria:</strong> Rispetto all'origine (simmetria centrale)</p>
+                        <p><strong>Test pratico:</strong> Ruotando il grafico di 180° attorno all'origine, ottieni lo stesso grafico</p>
+                        <p><strong>Esempi:</strong></p>
+                        <ul>
+                            <li>\(f(x) = x^3\) → \(f(-x) = (-x)^3 = -x^3 = -f(x)\) ✓ DISPARI</li>
+                            <li>\(g(x) = \frac{1}{x}\) → \(g(-x) = \frac{1}{-x} = -\frac{1}{x} = -g(x)\) ✓ DISPARI</li>
+                            <li>\(h(x) = \sin(x)\) → \(h(-x) = \sin(-x) = -\sin(x)\) ✓ DISPARI</li>
+                            <li>\(k(x) = x^5 - 3x\) → ✓ DISPARI (solo potenze dispari)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>⚠️ ATTENZIONE:</strong> 
+                        <ul>
+                            <li>Esistono funzioni che NON sono né pari né dispari! Es: \(f(x) = x^2 + x\)</li>
+                            <li>Se una funzione dispari è definita in \(x = 0\), allora \(f(0) = 0\)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Metodo per verificare</h4>
+                        <p>Per \(f(x) = x^3 - x\):</p>
+                        <ol>
+                            <li>Calcolo \(f(-x) = (-x)^3 - (-x) = -x^3 + x\)</li>
+                            <li>Calcolo \(-f(x) = -(x^3 - x) = -x^3 + x\)</li>
+                            <li>Confronto: \(f(-x) = -f(x)\) ✓ → FUNZIONE DISPARI</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 2</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 3</span>
+                    <p>Stabilisci se le seguenti funzioni sono pari, dispari o nessuna delle due:</p>
+                    <ol>
+                        <li>\(f(x) = x^4 - 2x^2\)</li>
+                        <li>\(g(x) = x^5 + x^3\)</li>
+                        <li>\(h(x) = x^2 + 3x\)</li>
+                        <li>\(k(x) = \frac{x}{x^2 + 1}\)</li>
+                        <li>\(m(x) = |x| + x^2\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>VERIFICA SIMMETRIE:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 4</span>
+                    <p>Sapendo che \(f(x)\) è una funzione dispari e che \(f(2) = 5\), quanto vale \(f(-2)\)?</p>
+                    <p>Sapendo che \(g(x)\) è una funzione pari e che \(g(-3) = 7\), quanto vale \(g(3)\)?</p>
+                    
+                    <div class="solution-space">
+                        <strong>RAGIONAMENTO:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🔁 Parte 3: Funzioni Periodiche</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory3-blue')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory3-blue">
+                    <h3>🎯 Periodicità</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Definizione</h4>
+                        <p>Una funzione \(f(x)\) è PERIODICA di periodo \(T > 0\) se:</p>
+                        <div class="formula-highlight">
+                            \(f(x + T) = f(x) \quad \forall x \in D\)
+                        </div>
+                        <p><em>In parole:</em> La funzione si ripete uguale ogni \(T\) unità</p>
+                        <p><strong>Il periodo minimo</strong> è il più piccolo valore di \(T\) per cui vale la relazione</p>
+                        
+                        <p><strong>Graficamente:</strong> Il grafico si ripete ciclicamente</p>
+                        
+                        <p><strong>Analogia musicale:</strong> Un loop che si ripete ogni \(T\) secondi</p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempi fondamentali</h4>
+                        <ul>
+                            <li>\(\sin(x)\): periodo \(T = 2\pi\)</li>
+                            <li>\(\cos(x)\): periodo \(T = 2\pi\)</li>
+                            <li>\(\tan(x)\): periodo \(T = \pi\)</li>
+                            <li>\(\sin(2x)\): periodo \(T = \pi\) (frequenza doppia → periodo dimezzato)</li>
+                            <li>\(\cos\left(\frac{x}{2}\right)\): periodo \(T = 4\pi\) (frequenza dimezzata → periodo raddoppiato)</li>
+                        </ul>
+                        
+                        <p><strong>Regola generale:</strong> Se \(f(x)\) ha periodo \(T\), allora \(f(kx)\) ha periodo \(\frac{T}{|k|}\)</p>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 3</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 5</span>
+                    <p>Determina il periodo delle seguenti funzioni periodiche:</p>
+                    <ol>
+                        <li>\(f(x) = \sin(3x)\)</li>
+                        <li>\(g(x) = \cos\left(\frac{x}{4}\right)\)</li>
+                        <li>\(h(x) = \tan(2x)\)</li>
+                        <li>\(k(x) = \sin(x) + \cos(x)\) (SFIDA: hanno lo stesso periodo?)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>CALCOLO PERIODI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 6</span>
+                    <p>Una funzione periodica \(f(x)\) ha periodo \(T = 4\) e nell'intervallo \([0, 4)\) è definita come:</p>
+                    <p>\(f(x) = x^2\) per \(0 \leq x < 4\)</p>
+                    <p>Calcola:</p>
+                    <ol>
+                        <li>\(f(5)\)</li>
+                        <li>\(f(10)\)</li>
+                        <li>\(f(-2)\)</li>
+                        <li>\(f(17)\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>SFRUTTANDO LA PERIODICITÀ:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🏠 LAVORO A CASA - Squadra Blu</h2>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 1</span>
+                    <p>Analizza completamente la funzione \(f(x) = x^3 - 3x\):</p>
+                    <ol>
+                        <li>È pari, dispari o nessuna delle due?</li>
+                        <li>Trova gli zeri</li>
+                        <li>Determina gli intervalli di crescenza e decrescenza</li>
+                        <li>È monotona?</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 2</span>
+                    <p>Una funzione \(g(x)\) è pari e periodica di periodo 6.</p>
+                    <p>Sapendo che nell'intervallo \([0, 3]\) vale \(g(x) = x(3-x)\):</p>
+                    <ol>
+                        <li>Disegna qualitativamente il grafico nell'intervallo \([-6, 6]\)</li>
+                        <li>Calcola \(g(7)\), \(g(-4)\), \(g(15)\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SQUADRA VERDE -->
+        <div class="tab-content" id="tab2">
+            <div class="card">
+                <h2><span class="icon">🟢</span> SQUADRA VERDE: Function Composer</h2>
+                <p><strong>Missione:</strong> Comporre e invertire funzioni - creare catene di effetti</p>
+                <p><strong>Focus:</strong> Funzione composta, funzione inversa, irrazionali e trascendenti</p>
+            </div>
+            
+            <div class="card">
+                <h2>📚 Parte 1: Funzioni Irrazionali e Trascendenti</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory1-green')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory1-green">
+                    <h3>🎯 Classificazione: Funzioni Irrazionali e Trascendenti</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Funzioni Irrazionali</h4>
+                        <p>Contengono la variabile \(x\) sotto radice.</p>
+                        <p><strong>Forma generale:</strong> \(f(x) = \sqrt[n]{g(x)}\)</p>
+                        
+                        <p><strong>Dominio:</strong> Dipende dall'indice della radice:</p>
+                        <ul>
+                            <li><strong>Radice quadrata (\(n = 2\)):</strong> Il radicando deve essere \(\geq 0\)
+                                <div class="formula-highlight">\(f(x) = \sqrt{g(x)} \Rightarrow g(x) \geq 0\)</div>
+                            </li>
+                            <li><strong>Radice cubica (\(n = 3\)):</strong> Definita su tutto \(\mathbb{R}\)</li>
+                            <li><strong>Radice con indice pari:</strong> Radicando \(\geq 0\)</li>
+                            <li><strong>Radice con indice dispari:</strong> Definita su tutto \(\mathbb{R}\)</li>
+                        </ul>
+                        
+                        <div class="example-box">
+                            <h4>Esempi:</h4>
+                            <ul>
+                                <li>\(f(x) = \sqrt{x-2}\) → Dominio: \(x - 2 \geq 0 \Rightarrow x \geq 2\) → \(D = [2, +\infty)\)</li>
+                                <li>\(g(x) = \sqrt{4-x^2}\) → Dominio: \(4 - x^2 \geq 0 \Rightarrow -2 \leq x \leq 2\) → \(D = [-2, 2]\)</li>
+                                <li>\(h(x) = \sqrt[3]{x+1}\) → Dominio: \(D = \mathbb{R}\) (radice cubica)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>Funzioni Trascendenti</h4>
+                        <p>Non possono essere espresse con operazioni algebriche (potenze, radici, somme, prodotti).</p>
+                        
+                        <p><strong>Principali famiglie:</strong></p>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Esempi</th>
+                                    <th>Dominio</th>
+                                    <th>Caratteristiche</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Esponenziali</strong></td>
+                                    <td>\(f(x) = a^x\), \(e^x\)</td>
+                                    <td>\(\mathbb{R}\)</td>
+                                    <td>Sempre positive, monotone</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Logaritmiche</strong></td>
+                                    <td>\(f(x) = \log_a(x)\), \(\ln(x)\)</td>
+                                    <td>\((0, +\infty)\)</td>
+                                    <td>Inverse delle esponenziali</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Trigonometriche</strong></td>
+                                    <td>\(\sin(x)\), \(\cos(x)\), \(\tan(x)\)</td>
+                                    <td>Variabile (es. \(\tan\): \(x \neq \frac{\pi}{2} + k\pi\))</td>
+                                    <td>Periodiche</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 1</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 1</span>
+                    <p>Determina il dominio delle seguenti funzioni irrazionali:</p>
+                    <ol>
+                        <li>\(f(x) = \sqrt{x+3}\)</li>
+                        <li>\(g(x) = \sqrt{9-x^2}\)</li>
+                        <li>\(h(x) = \sqrt{\frac{x-1}{x+2}}\)</li>
+                        <li>\(k(x) = \sqrt[3]{2x-5}\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>CALCOLO DOMINI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 2</span>
+                    <p>Classifica le seguenti funzioni (razionale intera/fratta, irrazionale, trascendente) e determina il dominio:</p>
+                    <ol>
+                        <li>\(f(x) = 2^x + 1\)</li>
+                        <li>\(g(x) = \ln(x-3)\)</li>
+                        <li>\(h(x) = \sqrt{x^2-4}\)</li>
+                        <li>\(k(x) = \frac{\sin(x)}{x}\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>CLASSIFICAZIONE E DOMINI:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🔗 Parte 2: Funzione Composta</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory2-green')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory2-green">
+                    <h3>🎯 Composizione di Funzioni</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Definizione</h4>
+                        <p>Date due funzioni \(f\) e \(g\), la <strong>funzione composta</strong> \(f \circ g\) (si legge "f composto g") è:</p>
+                        <div class="formula-highlight">
+                            \((f \circ g)(x) = f(g(x))\)
+                        </div>
+                        
+                        <p><strong>Come funziona:</strong></p>
+                        <ol>
+                            <li>Prima si applica \(g\) a \(x\) → si ottiene \(g(x)\)</li>
+                            <li>Poi si applica \(f\) al risultato → si ottiene \(f(g(x))\)</li>
+                        </ol>
+                        
+                        <p><strong>Analogia audio:</strong> Catena di effetti</p>
+                        <ul>
+                            <li>Input: segnale \(x\)</li>
+                            <li>Primo effetto \(g\): trasforma \(x\) in \(g(x)\)</li>
+                            <li>Secondo effetto \(f\): trasforma \(g(x)\) in \(f(g(x))\)</li>
+                            <li>Output finale: \((f \circ g)(x)\)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>⚠️ ATTENZIONE:</strong> L'ordine è IMPORTANTE!
+                        <p>In generale: \(f \circ g \neq g \circ f\)</p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempio Completo</h4>
+                        <p>Date \(f(x) = x^2\) e \(g(x) = x + 3\)</p>
+                        
+                        <p><strong>Calcolo di \((f \circ g)(x) = f(g(x))\):</strong></p>
+                        <ol>
+                            <li>\(g(x) = x + 3\)</li>
+                            <li>\(f(g(x)) = f(x+3) = (x+3)^2 = x^2 + 6x + 9\)</li>
+                        </ol>
+                        <p>Quindi: \((f \circ g)(x) = x^2 + 6x + 9\)</p>
+                        
+                        <p><strong>Calcolo di \((g \circ f)(x) = g(f(x))\):</strong></p>
+                        <ol>
+                            <li>\(f(x) = x^2\)</li>
+                            <li>\(g(f(x)) = g(x^2) = x^2 + 3\)</li>
+                        </ol>
+                        <p>Quindi: \((g \circ f)(x) = x^2 + 3\)</p>
+                        
+                        <p><strong>Conclusione:</strong> \((f \circ g)(x) \neq (g \circ f)(x)\) ✓</p>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>Dominio della Funzione Composta</h4>
+                        <p>Il dominio di \(f \circ g\) è:</p>
+                        <div class="formula-highlight">
+                            \(D_{f \circ g} = \{x \in D_g : g(x) \in D_f\}\)
+                        </div>
+                        <p><em>In parole:</em></p>
+                        <ol>
+                            <li>\(x\) deve appartenere al dominio di \(g\)</li>
+                            <li>Il valore \(g(x)\) deve appartenere al dominio di \(f\)</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 2</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 3</span>
+                    <p>Date \(f(x) = 2x - 1\) e \(g(x) = x^2 + 3\), calcola:</p>
+                    <ol>
+                        <li>\((f \circ g)(x)\)</li>
+                        <li>\((g \circ f)(x)\)</li>
+                        <li>\((f \circ g)(2)\)</li>
+                        <li>\((g \circ f)(-1)\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>COMPOSIZIONI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 4</span>
+                    <p>Date \(f(x) = \sqrt{x}\) e \(g(x) = x - 4\):</p>
+                    <ol>
+                        <li>Calcola \((f \circ g)(x)\)</li>
+                        <li>Determina il dominio di \(f \circ g\)</li>
+                        <li>Calcola \((g \circ f)(x)\)</li>
+                        <li>Determina il dominio di \(g \circ f\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>COMPOSIZIONI CON DOMINI:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 5 - Decomposizione</span>
+                    <p>Scrivi le seguenti funzioni come composizione di due funzioni più semplici:</p>
+                    <ol>
+                        <li>\(h(x) = \sqrt{x^2 + 1}\) → trova \(f\) e \(g\) tali che \(h = f \circ g\)</li>
+                        <li>\(k(x) = (2x - 3)^5\) → trova \(f\) e \(g\) tali che \(k = f \circ g\)</li>
+                        <li>\(m(x) = \frac{1}{x^2 + 4}\) → trova \(f\) e \(g\) tali che \(m = f \circ g\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>DECOMPOSIZIONI:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>↩️ Parte 3: Funzione Inversa</h2>
+                
+                <button class="toggle-theory-btn" onclick="toggleTheory('theory3-green')">
+                    📖 SPIEGAZIONE TEORICA
+                </button>
+                
+                <div class="theory-content" id="theory3-green">
+                    <h3>🎯 Funzione Inversa</h3>
+                    
+                    <div class="theory-box">
+                        <h4>Definizione</h4>
+                        <p>La funzione inversa \(f^{-1}\) di una funzione \(f\) è quella funzione che "annulla" l'effetto di \(f\).</p>
+                        <div class="formula-highlight">
+                            \(f(f^{-1}(x)) = x \quad \text{e} \quad f^{-1}(f(x)) = x\)
+                        </div>
+                        
+                        <p><strong>Analogia audio:</strong> Se \(f\) è un effetto, \(f^{-1}\) è l'effetto che riporta al segnale originale</p>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>Come trovare la funzione inversa</h4>
+                        <p><strong>Procedura in 4 passi:</strong></p>
+                        <ol>
+                            <li>Scrivi \(y = f(x)\)</li>
+                            <li>Scambia \(x\) e \(y\): \(x = f(y)\)</li>
+                            <li>Risolvi per \(y\)</li>
+                            <li>La soluzione è \(y = f^{-1}(x)\)</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempio 1: Funzione lineare</h4>
+                        <p>Trova l'inversa di \(f(x) = 2x + 3\)</p>
+                        <ol>
+                            <li>\(y = 2x + 3\)</li>
+                            <li>\(x = 2y + 3\)</li>
+                            <li>\(x - 3 = 2y \Rightarrow y = \frac{x-3}{2}\)</li>
+                            <li>\(f^{-1}(x) = \frac{x-3}{2}\)</li>
+                        </ol>
+                        
+                        <p><strong>Verifica:</strong></p>
+                        <p>\(f(f^{-1}(x)) = f\left(\frac{x-3}{2}\right) = 2 \cdot \frac{x-3}{2} + 3 = x - 3 + 3 = x\) ✓</p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>💡 Esempio 2: Funzione con radice</h4>
+                        <p>Trova l'inversa di \(f(x) = \sqrt{x}\) per \(x \geq 0\)</p>
+                        <ol>
+                            <li>\(y = \sqrt{x}\)</li>
+                            <li>\(x = \sqrt{y}\)</li>
+                            <li>\(x^2 = y\) (elevando al quadrato)</li>
+                            <li>\(f^{-1}(x) = x^2\) per \(x \geq 0\)</li>
+                        </ol>
+                        
+                        <p><strong>Nota:</strong> Il dominio di \(f^{-1}\) è il codominio di \(f\)</p>
+                    </div>
+                    
+                    <div class="theory-box">
+                        <h4>Proprietà Grafiche</h4>
+                        <p>Il grafico di \(f^{-1}\) è <strong>simmetrico</strong> al grafico di \(f\) rispetto alla retta \(y = x\)</p>
+                        <p><em>Test pratico:</em> Se pieghi il foglio sulla retta \(y = x\), i due grafici si sovrappongono</p>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>⚠️ Quando NON esiste l'inversa:</strong>
+                        <p>Non tutte le funzioni hanno inversa! Ad esempio \(f(x) = x^2\) definita su tutto \(\mathbb{R}\) NON ha inversa perché a uno stesso valore di \(y\) corrispondono due valori di \(x\) (es: \(f(2) = f(-2) = 4\)).</p>
+                        <p><strong>Soluzione:</strong> Restringere il dominio (es: \(f(x) = x^2\) per \(x \geq 0\) ha inversa \(f^{-1}(x) = \sqrt{x}\))</p>
+                    </div>
+                </div>
+                
+                <h3>🎯 ESERCIZI - Parte 3</h3>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 6</span>
+                    <p>Trova la funzione inversa di:</p>
+                    <ol>
+                        <li>\(f(x) = 3x - 5\)</li>
+                        <li>\(g(x) = \frac{x+2}{4}\)</li>
+                        <li>\(h(x) = \frac{1}{x}\) per \(x \neq 0\)</li>
+                        <li>\(k(x) = 2 - x\)</li>
+                    </ol>
+                    <p><strong>Verifica sempre che \(f(f^{-1}(x)) = x\)</strong></p>
+                    
+                    <div class="solution-space">
+                        <strong>FUNZIONI INVERSE:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 7</span>
+                    <p>Data \(f(x) = x^3\):</p>
+                    <ol>
+                        <li>Trova \(f^{-1}(x)\)</li>
+                        <li>Calcola \(f^{-1}(8)\)</li>
+                        <li>Calcola \(f^{-1}(-27)\)</li>
+                        <li>Verifica che \(f(f^{-1}(x)) = x\)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>INVERSA DELLA CUBICA:</strong><br><br>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Esercizio 8 - SFIDA</span>
+                    <p>Considera \(f(x) = \frac{2x + 1}{x - 3}\) con \(x \neq 3\)</p>
+                    <ol>
+                        <li>Trova \(f^{-1}(x)\)</li>
+                        <li>Determina il dominio di \(f^{-1}\)</li>
+                        <li>Cosa noti confrontando \(f\) e \(f^{-1}\)? (Spoiler: sono molto simili!)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                        <strong>INVERSA DI FUNZIONE FRATTA:</strong><br><br>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🏠 LAVORO A CASA - Squadra Verde</h2>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 1</span>
+                    <p>Date \(f(x) = x^2 - 1\) (con \(x \geq 0\)) e \(g(x) = \sqrt{x + 3}\):</p>
+                    <ol>
+                        <li>Calcola \((f \circ g)(x)\) e determina il dominio</li>
+                        <li>Calcola \((g \circ f)(x)\) e determina il dominio</li>
+                        <li>Trova \(f^{-1}(x)\)</li>
+                        <li>Trova \(g^{-1}(x)\)</li>
+                        <li>Verifica che \((f \circ g)^{-1}(x) = (g^{-1} \circ f^{-1})(x)\) (proprietà dell'inversa della composta)</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <span class="exercise-number">Homework 2</span>
+                    <p>Problema applicativo: In un sistema audio, il segnale \(x\) passa attraverso tre effetti in sequenza:</p>
+                    <ul>
+                        <li>Effetto 1: \(g_1(x) = 2x\) (amplificazione)</li>
+                        <li>Effetto 2: \(g_2(x) = x + 5\) (DC offset)</li>
+                        <li>Effetto 3: \(g_3(x) = x^2\) (distorsione)</li>
+                    </ul>
+                    <ol>
+                        <li>Scrivi la funzione complessiva \(F(x) = (g_3 \circ g_2 \circ g_1)(x)\)</li>
+                        <li>Se l'output finale è 100, qual era l'input originale \(x\)? (Usa la funzione inversa)</li>
+                        <li>Se cambio l'ordine degli effetti in \(g_1 \circ g_3 \circ g_2\), ottengo lo stesso risultato?</li>
+                    </ol>
+                    
+                    <div class="solution-space">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="print-button" onclick="window.print()">🖨️ STAMPA QUESTA SCHEDA</button>
+    </div>
+    
+    <script>
+        function showTab(index) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            tabs[index].classList.add('active');
+            buttons[index].classList.add('active');
+        }
+        
+        function toggleTheory(id) {
+            const theoryContent = document.getElementById(id);
+            theoryContent.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
